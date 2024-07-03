@@ -5,6 +5,8 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Insets;
 
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -25,6 +27,7 @@ public class MainView extends JFrame {
 	private JLabel lblName;
 	private JSeparator separator;
 	private JTextArea textArea;
+	private JButton btnSave;
 
 	/**
 	 * Launch the application.
@@ -75,6 +78,11 @@ public class MainView extends JFrame {
 		toolsPanel.setBounds(20, 98, 863, 38);
 		contentPane.add(toolsPanel);
 		toolsPanel.setLayout(null);
+		
+		btnSave = new JButton("");
+		btnSave.setIcon(new ImageIcon("images/disco-flexible.png"));
+		btnSave.setBounds(10, 10, 30, 21);
+		toolsPanel.add(btnSave);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		
