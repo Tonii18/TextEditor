@@ -1,12 +1,16 @@
 package views;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -53,6 +57,7 @@ public class MainView extends JFrame {
 		setBounds(100, 100, 907, 808);
 		setLocationRelativeTo(null);
 		contentPane = new JPanel();
+		contentPane.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
@@ -80,6 +85,8 @@ public class MainView extends JFrame {
 		toolsPanel.setLayout(null);
 		
 		btnSave = new JButton("");
+		btnSave.setBackground(new Color(255, 255, 255));
+		btnSave.setBorderPainted(false);
 		btnSave.setIcon(new ImageIcon("images/disco-flexible.png"));
 		btnSave.setBounds(10, 10, 30, 21);
 		toolsPanel.add(btnSave);
@@ -97,5 +104,26 @@ public class MainView extends JFrame {
 		textArea.setWrapStyleWord(true); //Habilitar ajuste de linea por palabra
 		textArea.setMargin(new Insets(30, 25, 15, 25));
 		scrollPane.setViewportView(textArea);
+		
+		
+		//ActionsListeners
+		
+		btnSave.addActionListener(new buttons());
+	}
+	
+	private class buttons implements ActionListener{
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			JButton button = (JButton)e.getSource();
+			if(button == btnSave) {
+				save();
+			}
+		}
+		
+	}
+	
+	public void save() {
+		JFileChooser file = new JFileChooser();
+		
 	}
 }
