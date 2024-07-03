@@ -1,17 +1,30 @@
 package views;
 
+import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.Insets;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
 
 public class MainView extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
+	
+	private JTextField tfName;
+	private JLabel lblName;
+	private JSeparator separator;
+	private JTextArea textArea;
 
 	/**
 	 * Launch the application.
@@ -41,5 +54,40 @@ public class MainView extends JFrame {
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		
+		lblName = new JLabel("Nombre del documento");
+		lblName.setFont(new Font("Yu Gothic UI Semilight", Font.BOLD, 20));
+		lblName.setHorizontalAlignment(SwingConstants.CENTER);
+		lblName.setBounds(133, 10, 246, 38);
+		contentPane.add(lblName);
+		
+		tfName = new JTextField();
+		tfName.setBounds(512, 16, 246, 32);
+		contentPane.add(tfName);
+		tfName.setColumns(10);
+		
+		separator = new JSeparator();
+		separator.setBounds(10, 78, 873, 10);
+		contentPane.add(separator);
+		
+		JPanel toolsPanel = new JPanel();
+		toolsPanel.setBackground(new Color(192, 192, 192));
+		toolsPanel.setBounds(20, 98, 863, 38);
+		contentPane.add(toolsPanel);
+		toolsPanel.setLayout(null);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		
+		//Eliminar el scrollbar horizontal
+		
+		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPane.setBounds(20, 176, 863, 585);
+		contentPane.add(scrollPane);
+		
+		textArea = new JTextArea();
+		textArea.setLineWrap(true); //Habilitar ajuste de linea
+		textArea.setWrapStyleWord(true); //Habilitar ajuste de linea por palabra
+		textArea.setMargin(new Insets(30, 25, 15, 25));
+		scrollPane.setViewportView(textArea);
 	}
 }
