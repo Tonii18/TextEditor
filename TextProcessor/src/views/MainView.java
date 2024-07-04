@@ -10,7 +10,6 @@ import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -22,6 +21,8 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
+import controller.Function;
+
 public class MainView extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -32,6 +33,8 @@ public class MainView extends JFrame {
 	private JSeparator separator;
 	private JTextArea textArea;
 	private JButton btnSave;
+	
+	private Function f = new Function();
 
 	/**
 	 * Launch the application.
@@ -116,14 +119,10 @@ public class MainView extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			JButton button = (JButton)e.getSource();
 			if(button == btnSave) {
-				save();
+				f.saveDocument();
 			}
 		}
 		
 	}
 	
-	public void save() {
-		JFileChooser file = new JFileChooser();
-		
-	}
 }
