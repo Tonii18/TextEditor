@@ -10,8 +10,14 @@ import java.io.IOException;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.JTextArea;
+import javax.swing.JTextPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.Element;
+import javax.swing.text.ElementIterator;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
+import javax.swing.text.html.HTML;
 
 import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
@@ -69,7 +75,7 @@ public class Function {
 			String extension = getFileExtension(selectedFile);
 			
 			try {
-				JTextArea textArea = mainview.getTextArea();
+				JTextPane textArea = mainview.getTextArea();
 				if(extension.equals("txt")) {
 					loadTextFile(selectedFile, textArea);
 				}else if(extension.equals("docx")) {
@@ -98,20 +104,15 @@ public class Function {
 		return extension;
 	}
 	
-	public void loadTextFile(File file, JTextArea textArea) throws IOException {
+	public void loadTextFile(File file, JTextPane textArea) throws IOException {
 		textArea.setText(""); // Limpiar el JTextArea antes de cargar el archivo
 
-	    try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-	        String line;
-	        while ((line = br.readLine()) != null) {
-	            textArea.append(line + "\n");
-	        }
-	        // Aplicar estilo de fuente por defecto
-	        textArea.setFont(new Font("Arial", Font.PLAIN, 12));
-	    }
+		 BufferedReader br = new BufferedReader(new FileReader(file));
+	     textArea.read(br, null);
+	     textArea.setFont(new Font("Arial", Font.PLAIN, 12));
 	}
 	
-	public void loadDocxFile(File file, JTextArea textArea) throws IOException {
+	public void loadDocxFile(File file, JTextPane textArea) throws IOException {
 		textArea.setText(""); // Limpiar el JTextArea antes de cargar el archivo
 
 	    try (FileInputStream fis = new FileInputStream(file)) {
@@ -122,5 +123,8 @@ public class Function {
 	        textArea.setFont(new Font("Arial", Font.PLAIN, 12));
 	    }
 	}
+	
+	
+	
 
 }
