@@ -22,6 +22,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import controller.Function;
+import javax.swing.JToolBar;
 
 public class MainView extends JFrame {
 
@@ -33,6 +34,7 @@ public class MainView extends JFrame {
 	private JSeparator separator;
 	private JTextArea textArea;
 	private JButton btnSave;
+	private JButton btnUpload;
 	
 	private Function f;
 
@@ -96,6 +98,13 @@ public class MainView extends JFrame {
 		btnSave.setBounds(10, 10, 30, 21);
 		toolsPanel.add(btnSave);
 		
+		btnUpload = new JButton("");
+		btnUpload.setBorderPainted(false);
+		btnUpload.setBackground(Color.WHITE);
+		btnUpload.setIcon(new ImageIcon("images/cloud-upload-alt.png"));
+		btnUpload.setBounds(48, 10, 30, 21);
+		toolsPanel.add(btnUpload);
+		
 		JScrollPane scrollPane = new JScrollPane();
 		
 		//Eliminar el scrollbar horizontal
@@ -113,15 +122,18 @@ public class MainView extends JFrame {
 		
 		//ActionsListeners
 		
-		btnSave.addActionListener(new buttons());
+		btnSave.addActionListener(new Buttons());
+		btnUpload.addActionListener(new Buttons());
 	}
 	
-	private class buttons implements ActionListener{
+	private class Buttons implements ActionListener{
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			JButton button = (JButton)e.getSource();
 			if(button == btnSave) {
 				f.saveDocument();
+			}else if(button == btnUpload) {
+				f.uploadDocument();
 			}
 		}
 		
@@ -136,5 +148,4 @@ public class MainView extends JFrame {
 	public void setTextArea(JTextArea textArea) {
 		this.textArea = textArea;
 	}
-	
 }
