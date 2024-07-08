@@ -125,4 +125,14 @@ public class MainView extends JFrame {
 		
 	}
 	
+	//GETTERS Y SETTERS
+	
+	public JTextArea getTextArea() {
+		return textArea;
+	}
+
+	public void setTextArea(JTextArea textArea) {
+		this.textArea = textArea;
+	}
+	
 }
