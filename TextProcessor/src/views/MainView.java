@@ -34,7 +34,7 @@ public class MainView extends JFrame {
 	private JTextArea textArea;
 	private JButton btnSave;
 	
-	private Function f = new Function();
+	private Function f;
 
 	/**
 	 * Launch the application.
@@ -56,6 +56,8 @@ public class MainView extends JFrame {
 	 * Create the frame.
 	 */
 	public MainView() {
+		f = new Function(this);
+		setTitle("Procesador de texto");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 907, 808);
 		setLocationRelativeTo(null);

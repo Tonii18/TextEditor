@@ -14,19 +14,23 @@ import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import views.MainView;
 
 public class Function {
+
+	private MainView mainview;
 	
-	private MainView mainview = new MainView();
+	public Function(MainView mainview) {
+        this.mainview = mainview;
+    }
 
 	public void saveDocument() {
-		JFileChooser j = new JFileChooser();
-		j.setDialogTitle("Guarde el archivo");
-		j.setFileFilter(new FileNameExtensionFilter("Documentos de Word", "docx"));
+		JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setDialogTitle("Guardar documento");
+		fileChooser.setFileFilter(new FileNameExtensionFilter("Documentos de Word", "docx"));
 
-		int userSelection = j.showSaveDialog(null);
+		int userSelection = fileChooser.showSaveDialog(null);
 
 		if (userSelection == JFileChooser.APPROVE_OPTION) {
-			File fileSave = j.getSelectedFile();
-			String filePath = fileSave.getAbsolutePath();
+			File fileToSave = fileChooser.getSelectedFile();
+			String filePath = fileToSave.getAbsolutePath();
 			if (!filePath.endsWith(".docx")) {
 				filePath += ".docx";
 			}
@@ -34,7 +38,7 @@ public class Function {
 		}
 	}
 
-	private void saveTextAsDocx(String filePath) {
+	public void saveTextAsDocx(String filePath) {
 		XWPFDocument document = new XWPFDocument();
 		XWPFParagraph paragraph = document.createParagraph();
 		paragraph.createRun().setText(mainview.getTextArea().getText());
