@@ -3,12 +3,16 @@ package views;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.EventQueue;
+import java.awt.Font;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -42,6 +46,11 @@ public class MainView extends JFrame {
     private JButton btnRight;
     private JButton btnCenter;
     private JButton btnLeft;
+    private JComboBox<Font> fontsSelection;
+    
+    private List<String> fonts = new ArrayList<>();
+    
+    private static final Font FONT = new Font("Serif", Font.PLAIN, 20);
 
     /**
      * Launch the application.
@@ -71,6 +80,8 @@ public class MainView extends JFrame {
         contentPane = new JPanel();
         contentPane.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+        
+        setFontsArray(fonts); //Añadir distintas fuentes a la Lista
 
         setContentPane(contentPane);
         contentPane.setLayout(null);
@@ -125,6 +136,11 @@ public class MainView extends JFrame {
         btnLeft.setIcon(new ImageIcon("images/left.png"));
         btnLeft.setBounds(668, 10, 55, 21);
         toolsPanel.add(btnLeft);
+        
+        fontsSelection = new JComboBox(fonts.toArray(new String[0]));
+        fontsSelection.setBackground(new Color(255, 255, 255));
+        fontsSelection.setBounds(140, 10, 146, 21);
+        toolsPanel.add(fontsSelection);
 
         JScrollPane scrollPane = new JScrollPane();
 
@@ -135,6 +151,7 @@ public class MainView extends JFrame {
 
         textArea = new JTextPane();
         textArea.setMargin(new Insets(30, 50, 30, 50));
+        textArea.setFont(FONT);
 
         // Asegurarse de que el JTextPane ajuste su contenido
         textArea.setEditorKit(new WrapEditorKit());
@@ -147,25 +164,29 @@ public class MainView extends JFrame {
         btnLeft.addActionListener(new Buttons());
         btnRight.addActionListener(new Buttons());
         btnCenter.addActionListener(new Buttons());
+        fontsSelection.addActionListener(new Buttons());
     }
 
     private class Buttons implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            JButton button = (JButton) e.getSource();
-            if (button == btnSave) {
-                f.saveDocument();
-            } else if (button == btnUpload) {
-                f.uploadDocument();
-            } else if (button == btnLeft) {
-                // Acción para alinear texto a la izquierda
-            	f.alignText(StyleConstants.ALIGN_LEFT);
-            } else if (button == btnCenter) {
-                // Acción para centrar el texto
-            	f.alignText(StyleConstants.ALIGN_CENTER);
-            } else if (button == btnRight) {
-                // Acción para alinear texto a la derecha
-            	f.alignText(StyleConstants.ALIGN_RIGHT);
+            Object source = e.getSource();
+            if(source instanceof JButton) {
+            	if (source == btnSave) {
+                    f.saveDocument();
+                } else if (source == btnUpload) {
+                    f.uploadDocument();
+                } else if (source == btnLeft) {
+                    f.alignText(StyleConstants.ALIGN_LEFT);
+                } else if (source == btnCenter) {
+                    f.alignText(StyleConstants.ALIGN_CENTER);
+                } else if (source == btnRight) {
+                    f.alignText(StyleConstants.ALIGN_RIGHT);
+                }
+            }else if(source instanceof JComboBox) {
+            	if(source == fontsSelection) {
+            		f.setFont((String)fontsSelection.getSelectedItem());
+            	}
             }
         }
     }
@@ -223,6 +244,13 @@ public class MainView extends JFrame {
                 }
             }
         }
+    }
+    
+    public void setFontsArray(List<String> array) {
+    	array.add(new String("Serif"));
+    	array.add(new String("Segoe UI"));
+    	array.add(new String("Arial"));
+    	array.add(new String("Calibri"));
     }
 }
 

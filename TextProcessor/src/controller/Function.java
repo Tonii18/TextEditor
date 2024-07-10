@@ -125,7 +125,7 @@ public class Function {
 	    }
 	}
 	
-	//Metodos para las alineaciones
+	//Metodo para las alineaciones
 	
 	public void alignText(int alignment) {
 		JTextPane textpane = mainview.getTextArea();
@@ -133,6 +133,13 @@ public class Function {
 		SimpleAttributeSet attributset = new SimpleAttributeSet();
 		StyleConstants.setAlignment(attributset, alignment);
 		doc.setParagraphAttributes(textpane.getSelectionStart(), textpane.getSelectionEnd() - textpane.getSelectionStart(), attributset, false);
+	}
+	
+	//Metodo para establecer fuentes
+	
+	public void setFont(String font) {
+		JTextPane textPane = mainview.getTextArea();
+		textPane.setFont(new Font(font, Font.PLAIN, 20));
 	}
 	
 
