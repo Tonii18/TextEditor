@@ -15,6 +15,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.Element;
 import javax.swing.text.ElementIterator;
+import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 import javax.swing.text.html.HTML;
@@ -124,7 +125,15 @@ public class Function {
 	    }
 	}
 	
+	//Metodos para las alineaciones
 	
+	public void alignText(int alignment) {
+		JTextPane textpane = mainview.getTextArea();
+		StyledDocument doc = textpane.getStyledDocument();
+		SimpleAttributeSet attributset = new SimpleAttributeSet();
+		StyleConstants.setAlignment(attributset, alignment);
+		doc.setParagraphAttributes(textpane.getSelectionStart(), textpane.getSelectionEnd() - textpane.getSelectionStart(), attributset, false);
+	}
 	
 
 }

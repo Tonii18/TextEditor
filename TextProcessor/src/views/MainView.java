@@ -159,10 +159,13 @@ public class MainView extends JFrame {
                 f.uploadDocument();
             } else if (button == btnLeft) {
                 // Acción para alinear texto a la izquierda
+            	f.alignText(StyleConstants.ALIGN_LEFT);
             } else if (button == btnCenter) {
                 // Acción para centrar el texto
+            	f.alignText(StyleConstants.ALIGN_CENTER);
             } else if (button == btnRight) {
                 // Acción para alinear texto a la derecha
+            	f.alignText(StyleConstants.ALIGN_RIGHT);
             }
         }
     }
