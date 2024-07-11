@@ -15,13 +15,16 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
-import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
+import org.apache.poi.xwpf.usermodel.UnderlinePatterns;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.apache.poi.xwpf.usermodel.XWPFRun;
 
 import views.MainView;
 
@@ -51,44 +54,75 @@ public class Function {
 	}
 
 	public void saveTextAsDocx(String filePath) {
-		XWPFDocument document = new XWPFDocument();
-		XWPFParagraph paragraph = document.createParagraph();
-		paragraph.createRun().setText(mainview.getTextArea().getText());
+	    XWPFDocument document = new XWPFDocument();
+	    StyledDocument styledDoc = mainview.getTextArea().getStyledDocument();
+	    XWPFParagraph paragraph = document.createParagraph();
+	    XWPFRun run = paragraph.createRun();
 
-		try (FileOutputStream out = new FileOutputStream(new File(filePath))) {
-			document.write(out);
-			JOptionPane.showMessageDialog(null, "Documento guardado exitosamente.");
-		} catch (IOException ex) {
-			JOptionPane.showMessageDialog(null, "Error al guardar el documento: " + ex.getMessage());
-			ex.printStackTrace();
-		}
+	    try {
+	        for (int i = 0; i < styledDoc.getLength(); i++) {
+	            String text = styledDoc.getText(i, 1);
+	            AttributeSet attributes = styledDoc.getCharacterElement(i).getAttributes();
+
+	            // Aplicar los estilos
+	            if (StyleConstants.isBold(attributes)) {
+	                run.setBold(true);
+	            }
+	            if (StyleConstants.isItalic(attributes)) {
+	                run.setItalic(true);
+	            }
+	            if (StyleConstants.isUnderline(attributes)) {
+	                run.setUnderline(UnderlinePatterns.SINGLE);
+	            }
+
+	            String fontFamily = StyleConstants.getFontFamily(attributes);
+	            int fontSize = StyleConstants.getFontSize(attributes);
+
+	            run.setFontFamily(fontFamily);
+	            run.setFontSize(fontSize);
+	            run.setText(text);
+
+	            // Resetear los estilos para el siguiente caracter
+	            run = paragraph.createRun();
+	        }
+
+	        try (FileOutputStream out = new FileOutputStream(new File(filePath))) {
+	            document.write(out);
+	            JOptionPane.showMessageDialog(null, "Documento guardado exitosamente.");
+	        }
+	    } catch (Exception ex) {
+	        JOptionPane.showMessageDialog(null, "Error al guardar el documento: " + ex.getMessage());
+	        ex.printStackTrace();
+	    }
 	}
+
 	
 	public void uploadDocument() {
-		JFileChooser fileChooser = new JFileChooser();
-		FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos de texto y documentos", "txt", "docx");
-		fileChooser.setFileFilter(filter);
-		
-		int returnValue = fileChooser.showOpenDialog(mainview);
-		if(returnValue == JFileChooser.APPROVE_OPTION) {
-			File selectedFile = fileChooser.getSelectedFile();
-			String extension = getFileExtension(selectedFile);
-			
-			try {
-				JTextPane textArea = mainview.getTextArea();
-				if(extension.equals("txt")) {
-					loadTextFile(selectedFile, textArea);
-				}else if(extension.equals("docx")) {
-					loadDocxFile(selectedFile, textArea);
-				}else {
-					JOptionPane.showMessageDialog(null, "Formato de archivo no compatible");
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-				JOptionPane.showMessageDialog(null, "Error al leer el archivo");
-			}
-		}
+	    JFileChooser fileChooser = new JFileChooser();
+	    FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos de texto y documentos", "txt", "docx");
+	    fileChooser.setFileFilter(filter);
+
+	    int returnValue = fileChooser.showOpenDialog(mainview);
+	    if (returnValue == JFileChooser.APPROVE_OPTION) {
+	        File selectedFile = fileChooser.getSelectedFile();
+	        String extension = getFileExtension(selectedFile);
+
+	        try {
+	            JTextPane textArea = mainview.getTextArea();
+	            if (extension.equals("txt")) {
+	                loadTextFile(selectedFile, textArea);
+	            } else if (extension.equals("docx")) {
+	                loadDocxFile(selectedFile, textArea);
+	            } else {
+	                JOptionPane.showMessageDialog(null, "Formato de archivo no compatible");
+	            }
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            JOptionPane.showMessageDialog(null, "Error al leer el archivo");
+	        }
+	    }
 	}
+
 	
 	public String getFileExtension(File file) {
 		String extension = "";
@@ -113,16 +147,46 @@ public class Function {
 	}
 	
 	public void loadDocxFile(File file, JTextPane textArea) throws IOException {
-		textArea.setText(""); // Limpiar el JTextArea antes de cargar el archivo
+	    textArea.setText(""); // Limpiar el JTextArea antes de cargar el archivo
 
 	    try (FileInputStream fis = new FileInputStream(file)) {
 	        XWPFDocument document = new XWPFDocument(fis);
-	        XWPFWordExtractor extractor = new XWPFWordExtractor(document);
-	        textArea.setText(extractor.getText());
+	        StyledDocument styledDoc = textArea.getStyledDocument();
+
+	        for (XWPFParagraph paragraph : document.getParagraphs()) {
+	            for (XWPFRun run : paragraph.getRuns()) {
+	                String text = run.getText(0);
+	                if (text != null) {
+	                    SimpleAttributeSet attributes = new SimpleAttributeSet();
+
+	                    // Aplicar estilos
+	                    if (run.isBold()) {
+	                        StyleConstants.setBold(attributes, true);
+	                    }
+	                    if (run.isItalic()) {
+	                        StyleConstants.setItalic(attributes, true);
+	                    }
+	                    if (run.getUnderline() != UnderlinePatterns.NONE) {
+	                        StyleConstants.setUnderline(attributes, true);
+	                    }
+
+	                    StyleConstants.setFontFamily(attributes, run.getFontFamily());
+	                    StyleConstants.setFontSize(attributes, run.getFontSize());
+
+	                    try {
+	                        styledDoc.insertString(styledDoc.getLength(), text, attributes);
+	                    } catch (BadLocationException e) {
+	                        e.printStackTrace();
+	                    }
+	                }
+	            }
+	        }
+
 	        // Aplicar estilo de fuente por defecto
 	        textArea.setFont(new Font("Arial", Font.PLAIN, 12));
 	    }
 	}
+
 	
 	//Metodo para las alineaciones
 	
