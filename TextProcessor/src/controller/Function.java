@@ -8,17 +8,15 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 
+import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.text.AttributeSet;
-import javax.swing.text.Element;
-import javax.swing.text.ElementIterator;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
-import javax.swing.text.html.HTML;
 
 import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
@@ -139,8 +137,88 @@ public class Function {
 	
 	public void setFont(String font) {
 		JTextPane textPane = mainview.getTextArea();
-		textPane.setFont(new Font(font, Font.PLAIN, 20));
+		StyledDocument doc = textPane.getStyledDocument();
+		int start = textPane.getSelectionStart();
+		int end = textPane.getSelectionEnd();
+		
+		if(start == end) {
+			SimpleAttributeSet attributeSet = new SimpleAttributeSet();
+			StyleConstants.setFontFamily(attributeSet, font);
+			textPane.setCharacterAttributes(attributeSet, false);
+		}else {
+			SimpleAttributeSet attributeSet = new SimpleAttributeSet();
+			StyleConstants.setFontFamily(attributeSet, font);
+			doc.setCharacterAttributes(start, end - start, attributeSet, false);
+		}
 	}
 	
+	//Tamaño de fuente
+	
+	public void fontSize(JButton button) {
+		JTextField fontSize = mainview.getTextField();
+		JTextPane textPane = mainview.getTextArea();
+		int value = Integer.valueOf(fontSize.getText());
+		
+		if(button.getText().equals("+")) {
+			value++;
+			fontSize.setText(String.valueOf(value));
+			
+			StyledDocument doc = textPane.getStyledDocument();
+			int start = textPane.getSelectionStart();
+			int end = textPane.getSelectionEnd();
+			
+			if(start == end) {
+				SimpleAttributeSet attributeSet = new SimpleAttributeSet();
+				StyleConstants.setFontSize(attributeSet, value);
+				textPane.setCharacterAttributes(attributeSet, false);
+			}else {
+				SimpleAttributeSet attributeSet = new SimpleAttributeSet();
+				StyleConstants.setFontSize(attributeSet, value);
+				doc.setCharacterAttributes(start, end - start, attributeSet, false);
+			}
+			
+		}
+		if(button.getText().equals("-")) {
+			if(value > 0) {
+				value--;
+				fontSize.setText(String.valueOf(value));
+				
+				StyledDocument doc = textPane.getStyledDocument();
+				int start = textPane.getSelectionStart();
+				int end = textPane.getSelectionEnd();
+				
+				if(start == end) {
+					SimpleAttributeSet attributeSet = new SimpleAttributeSet();
+					StyleConstants.setFontSize(attributeSet, value);
+					textPane.setCharacterAttributes(attributeSet, false);
+				}else {
+					SimpleAttributeSet attributeSet = new SimpleAttributeSet();
+					StyleConstants.setFontSize(attributeSet, value);
+					doc.setCharacterAttributes(start, end - start, attributeSet, false);
+				}
+				
+			}
+		}
+	}
+	
+	public void writeFontSize(String size) {
+		JTextPane textPane = mainview.getTextArea();
+		int value = Integer.valueOf(size);
+		
+		StyledDocument doc = textPane.getStyledDocument();
+		int start = textPane.getSelectionStart();
+		int end = textPane.getSelectionEnd();
+		
+		if(start == end) {
+			SimpleAttributeSet attributeSet = new SimpleAttributeSet();
+			StyleConstants.setFontSize(attributeSet, value);
+			textPane.setCharacterAttributes(attributeSet, false);
+		}else {
+			SimpleAttributeSet attributeSet = new SimpleAttributeSet();
+			StyleConstants.setFontSize(attributeSet, value);
+			doc.setCharacterAttributes(start, end - start, attributeSet, false);
+		}
+		
+	}
 
 }

@@ -33,6 +33,8 @@ import javax.swing.text.View;
 import javax.swing.text.ViewFactory;
 
 import controller.Function;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 public class MainView extends JFrame {
 
@@ -46,6 +48,9 @@ public class MainView extends JFrame {
     private JButton btnRight;
     private JButton btnCenter;
     private JButton btnLeft;
+    private JButton higher;
+    private JButton lower;
+    private JTextField fontSize;
     private JComboBox<Font> fontsSelection;
     
     private List<String> fonts = new ArrayList<>();
@@ -141,6 +146,21 @@ public class MainView extends JFrame {
         fontsSelection.setBackground(new Color(255, 255, 255));
         fontsSelection.setBounds(140, 10, 146, 21);
         toolsPanel.add(fontsSelection);
+        
+        fontSize = new JTextField();
+        fontSize.setText("20");
+        fontSize.setHorizontalAlignment(SwingConstants.CENTER);
+        fontSize.setBounds(366, 10, 48, 21);
+        toolsPanel.add(fontSize);
+        fontSize.setColumns(10);
+        
+        higher = new JButton("+");
+        higher.setBounds(424, 10, 42, 21);
+        toolsPanel.add(higher);
+        
+        lower = new JButton("-");
+        lower.setBounds(315, 10, 42, 21);
+        toolsPanel.add(lower);
 
         JScrollPane scrollPane = new JScrollPane();
 
@@ -165,6 +185,9 @@ public class MainView extends JFrame {
         btnRight.addActionListener(new Buttons());
         btnCenter.addActionListener(new Buttons());
         fontsSelection.addActionListener(new Buttons());
+        higher.addActionListener(new Buttons());
+        lower.addActionListener(new Buttons());
+        fontSize.addActionListener(new Buttons());
     }
 
     private class Buttons implements ActionListener {
@@ -182,10 +205,18 @@ public class MainView extends JFrame {
                     f.alignText(StyleConstants.ALIGN_CENTER);
                 } else if (source == btnRight) {
                     f.alignText(StyleConstants.ALIGN_RIGHT);
+                }else if(source == higher) {
+                	f.fontSize(higher);
+                }else if(source == lower) {
+                	f.fontSize(lower);
                 }
             }else if(source instanceof JComboBox) {
             	if(source == fontsSelection) {
             		f.setFont((String)fontsSelection.getSelectedItem());
+            	}
+            }else if(source instanceof JTextField) {
+            	if(source == fontSize) {
+            		f.writeFontSize(fontSize.getText());
             	}
             }
         }
@@ -198,6 +229,14 @@ public class MainView extends JFrame {
 
     public void setTextArea(JTextPane textArea) {
         this.textArea = textArea;
+    }
+    
+    public JTextField getTextField() {
+    	return fontSize;
+    }
+    
+    public void setFontSize(JTextField fontSize) {
+    	this.fontSize = fontSize;
     }
 
     // EditorKit personalizado para ajustar el texto automáticamente
@@ -251,6 +290,12 @@ public class MainView extends JFrame {
     	array.add(new String("Segoe UI"));
     	array.add(new String("Arial"));
     	array.add(new String("Calibri"));
+    	array.add(new String("Times New Roman"));
+    	array.add(new String("Verdana"));
+    	array.add(new String("Lucida Sans"));
+    	array.add(new String("Comic Sans MS"));
+    	array.add(new String("Helvetica"));
+    	array.add(new String("Tahoma"));
     }
 }
 
