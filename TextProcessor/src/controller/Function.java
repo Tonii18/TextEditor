@@ -1,5 +1,6 @@
 package controller;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.io.BufferedReader;
 import java.io.File;
@@ -219,6 +220,38 @@ public class Function {
 			doc.setCharacterAttributes(start, end - start, attributeSet, false);
 		}
 		
+	}
+	
+	//Estilo de fuente
+	
+	public void fontStyle(JButton button) {
+		JTextPane textPane = mainview.getTextArea();
+	    StyledDocument doc = textPane.getStyledDocument();
+	    int start = textPane.getSelectionStart();
+	    int end = textPane.getSelectionEnd();
+
+	    SimpleAttributeSet attributeSet = new SimpleAttributeSet();
+	    boolean isSelected = button.getForeground().equals(Color.BLUE);
+
+	    if (button.getName().equals("bold")) {
+	        StyleConstants.setBold(attributeSet, !isSelected);
+	    } else if (button.getName().equals("italic")) {
+	        StyleConstants.setItalic(attributeSet, !isSelected);
+	    } else if (button.getName().equals("underline")) {
+	        StyleConstants.setUnderline(attributeSet, !isSelected);
+	    }
+
+	    if (start == end) {
+	        textPane.setCharacterAttributes(attributeSet, false);
+	    } else {
+	        doc.setCharacterAttributes(start, end - start, attributeSet, false);
+	    }
+
+	    if (isSelected) {
+	        button.setForeground(Color.BLACK);
+	    } else {
+	        button.setForeground(Color.BLUE);
+	    }
 	}
 
 }

@@ -7,6 +7,8 @@ import java.awt.Font;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,8 +19,10 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
+import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.BoxView;
@@ -33,8 +37,7 @@ import javax.swing.text.View;
 import javax.swing.text.ViewFactory;
 
 import controller.Function;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
+import javax.swing.JLabel;
 
 public class MainView extends JFrame {
 
@@ -51,11 +54,16 @@ public class MainView extends JFrame {
     private JButton higher;
     private JButton lower;
     private JTextField fontSize;
+    private JButton bold;
+    private JButton italic;
+    private JButton underline;
+    private JLabel title;
     private JComboBox<Font> fontsSelection;
     
     private List<String> fonts = new ArrayList<>();
     
     private static final Font FONT = new Font("Serif", Font.PLAIN, 20);
+    
 
     /**
      * Launch the application.
@@ -79,6 +87,10 @@ public class MainView extends JFrame {
     public MainView() {
         f = new Function(this);
         setTitle("Procesador de texto");
+        
+        ImageIcon icon = new ImageIcon("images/agregar-archivo.png");
+        setIconImage(icon.getImage());
+        
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 907, 808);
         setLocationRelativeTo(null);
@@ -161,6 +173,30 @@ public class MainView extends JFrame {
         lower = new JButton("-");
         lower.setBounds(315, 10, 42, 21);
         toolsPanel.add(lower);
+        
+        bold = new JButton("B");
+        bold.setName("bold");
+        bold.setBorder(null);
+        bold.setBackground(new Color(255, 255, 255));
+        bold.setFont(new Font("Tahoma", Font.BOLD, 12));
+        bold.setBounds(500, 10, 45, 21);
+        toolsPanel.add(bold);
+        
+        italic = new JButton("I");
+        italic.setName("italic");
+        italic.setBorder(null);
+        italic.setBackground(new Color(255, 255, 255));
+        italic.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 12));
+        italic.setBounds(544, 10, 45, 21);
+        toolsPanel.add(italic);
+        
+        underline = new JButton("U");
+        underline.setName("underline");
+        underline.setBorder(null);
+        underline.setFont(new Font("Tahoma", Font.PLAIN, 12));
+        underline.setBackground(new Color(255, 255, 255));
+        underline.setBounds(588, 10, 45, 21);
+        toolsPanel.add(underline);
 
         JScrollPane scrollPane = new JScrollPane();
 
@@ -188,6 +224,40 @@ public class MainView extends JFrame {
         higher.addActionListener(new Buttons());
         lower.addActionListener(new Buttons());
         fontSize.addActionListener(new Buttons());
+        bold.addActionListener(new Buttons());
+        italic.addActionListener(new Buttons());
+        underline.addActionListener(new Buttons());
+        
+        List<JButton> buttons = new ArrayList<>();
+        buttons.add(btnLeft);
+        buttons.add(btnRight);
+        buttons.add(btnCenter);
+        buttons.add(bold);
+        buttons.add(italic);
+        buttons.add(underline);
+        
+        title = new JLabel("Microsoft Word");
+        title.setFont(new Font("Rockwell Condensed", Font.BOLD, 60));
+        title.setHorizontalAlignment(SwingConstants.CENTER);
+        title.setBounds(10, 10, 873, 58);
+        contentPane.add(title);
+        
+        for(int i = 0; i < buttons.size(); i++) {
+        	buttons.get(i).addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseEntered(MouseEvent e) {
+					JButton button = (JButton)e.getSource();
+					button.setBackground(new Color(219, 219, 219));
+				}
+
+				@Override
+				public void mouseExited(MouseEvent e) {
+					JButton button = (JButton)e.getSource();
+					button.setBackground(Color.WHITE);
+				}
+        		
+        	});
+        }
     }
 
     private class Buttons implements ActionListener {
@@ -209,6 +279,8 @@ public class MainView extends JFrame {
                 	f.fontSize(higher);
                 }else if(source == lower) {
                 	f.fontSize(lower);
+                }else if(source == bold || source == italic || source == underline) {
+                	f.fontStyle((JButton)source);
                 }
             }else if(source instanceof JComboBox) {
             	if(source == fontsSelection) {
