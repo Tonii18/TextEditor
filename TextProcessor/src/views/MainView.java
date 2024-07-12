@@ -88,7 +88,7 @@ public class MainView extends JFrame {
         f = new Function(this);
         setTitle("Procesador de texto");
         
-        ImageIcon icon = new ImageIcon("images/agregar-archivo.png");
+        ImageIcon icon = new ImageIcon(getClass().getResource("/agregar-archivo.png"));
         setIconImage(icon.getImage());
         
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -116,14 +116,14 @@ public class MainView extends JFrame {
         btnSave = new JButton("");
         btnSave.setBackground(new Color(255, 255, 255));
         btnSave.setBorderPainted(false);
-        btnSave.setIcon(new ImageIcon("images/disco-flexible.png"));
+        btnSave.setIcon(new ImageIcon(getClass().getResource("/disco-flexible.png")));
         btnSave.setBounds(10, 10, 30, 21);
         toolsPanel.add(btnSave);
 
         btnUpload = new JButton("");
         btnUpload.setBorderPainted(false);
         btnUpload.setBackground(Color.WHITE);
-        btnUpload.setIcon(new ImageIcon("images/cloud-upload-alt.png"));
+        btnUpload.setIcon(new ImageIcon(getClass().getResource("/cloud-upload-alt.png")));
         btnUpload.setBounds(48, 10, 30, 21);
         toolsPanel.add(btnUpload);
 
@@ -132,7 +132,7 @@ public class MainView extends JFrame {
         btnRight.setBackground(new Color(255, 255, 255));
         btnRight.setBorderPainted(false);
         btnRight.setBorder(null);
-        btnRight.setIcon(new ImageIcon("images/right.png"));
+        btnRight.setIcon(new ImageIcon(getClass().getResource("/right.png")));
         btnRight.setBounds(798, 10, 55, 21);
         toolsPanel.add(btnRight);
 
@@ -141,7 +141,7 @@ public class MainView extends JFrame {
         btnCenter.setBorder(null);
         btnCenter.setBackground(new Color(255, 255, 255));
         btnCenter.setBorderPainted(false);
-        btnCenter.setIcon(new ImageIcon("images/center.png"));
+        btnCenter.setIcon(new ImageIcon(getClass().getResource("/center.png")));
         btnCenter.setBounds(733, 10, 55, 21);
         toolsPanel.add(btnCenter);
 
@@ -150,7 +150,7 @@ public class MainView extends JFrame {
         btnLeft.setBorder(null);
         btnLeft.setBorderPainted(false);
         btnLeft.setBackground(new Color(255, 255, 255));
-        btnLeft.setIcon(new ImageIcon("images/left.png"));
+        btnLeft.setIcon(new ImageIcon(getClass().getResource("/left.png")));
         btnLeft.setBounds(668, 10, 55, 21);
         toolsPanel.add(btnLeft);
         
@@ -178,7 +178,7 @@ public class MainView extends JFrame {
         bold.setName("bold");
         bold.setBorder(null);
         bold.setBackground(new Color(255, 255, 255));
-        bold.setFont(new Font("Tahoma", Font.BOLD, 12));
+        bold.setFont(new Font("Tahoma", Font.BOLD, 15));
         bold.setBounds(500, 10, 45, 21);
         toolsPanel.add(bold);
         
@@ -186,14 +186,14 @@ public class MainView extends JFrame {
         italic.setName("italic");
         italic.setBorder(null);
         italic.setBackground(new Color(255, 255, 255));
-        italic.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 12));
+        italic.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 15));
         italic.setBounds(544, 10, 45, 21);
         toolsPanel.add(italic);
         
         underline = new JButton("U");
         underline.setName("underline");
         underline.setBorder(null);
-        underline.setFont(new Font("Tahoma", Font.PLAIN, 12));
+        underline.setFont(new Font("Tahoma", Font.PLAIN, 15));
         underline.setBackground(new Color(255, 255, 255));
         underline.setBounds(588, 10, 45, 21);
         toolsPanel.add(underline);

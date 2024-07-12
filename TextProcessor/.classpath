@@ -7,6 +7,7 @@
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="resources"/>
+	<classpathentry kind="src" path="librariesResources"/>
 	<classpathentry kind="lib" path="libraries/commons-codec-1.15.jar"/>
 	<classpathentry kind="lib" path="libraries/commons-collections4-4.4.jar"/>
 	<classpathentry kind="lib" path="libraries/commons-compress-1.21.jar"/>
